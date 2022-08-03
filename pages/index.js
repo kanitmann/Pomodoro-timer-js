@@ -1,16 +1,21 @@
-import { InfoIcon, SettingsIcon } from '@chakra-ui/icons';
-import { Container, Box, Divider, Center, Heading, HStack, Stack, IconButton } from '@chakra-ui/react';
+import { Container, Box, Divider, Heading, Center } from '@chakra-ui/react';
 import SubHeading from '../components/subheading';
+import Timer from '../components/timer';
 
 export default function Home() {
   return (
-    <Container maxW="container.sm">
+    <Container maxW="container.sm" paddingTop="50px" >
       <Box marginTop={8}>
-        <Heading size='lg'>Pomodoro Timer 🍅</Heading>
-        <Divider paddingTop="20px" />
-        <SubHeading />
+        <Box boxShadow='xl' p='6' rounded='md'>
+          <Heading size='lg'>Pomodoro Timer 🍅</Heading>
+          <Divider paddingTop="20px" />
+          <SubHeading />
+          <Center>
+            <Timer />
+          </Center>
+        </Box>
+
       </Box>
     </Container >
-
   )
 }

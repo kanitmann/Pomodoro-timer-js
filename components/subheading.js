@@ -4,7 +4,6 @@ import { Box, Heading, IconButton, Stack } from "@chakra-ui/react"
 const SubHeading = () => {
     return (
         <Heading as="h2" size="md">
-
             <Stack
                 alignItems="center"
                 width="100%"
