@@ -119,7 +119,7 @@ const timer = () => {
                 <Button size="md"
                     colorScheme='blue'
                     variant='outline'
-                    onClick={() => { setSeconds(2) }}
+                    onClick={() => { setTime(1) }}
                 >
                     1 min
                 </Button>
