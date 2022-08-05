@@ -1,6 +1,6 @@
 import { AddIcon, MinusIcon } from '@chakra-ui/icons'
 import { Box, Button, Center, Heading, IconButton, Stack } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 
 
@@ -9,43 +9,69 @@ const timer = () => {
     const [time, setTime] = useState(0);
     const [seconds, setSeconds] = useState(0);
     const [sec, setSec] = useState(0);
+    const [start, setStart] = useState(null);
+    // const [int, setInt] = useState(null);
+    const id = useRef(null)
+    function decFun() {
+        time - 5 < 0 ?
+            alertOption()
+            : setTime(prevCount => prevCount - 5);
+    }
+
     function alertOption() {
         setTime(0);
-        alert("Timer cannot be less than 00!");
-
+        setSeconds(0);
+        alert("Timer cannot be less than 00:00 Min!");
     }
 
     useEffect(() => {
-        time < 0 ?
-            alertOption()
-            : {};
         document.title = `${time} : ${seconds} - Pomodoro Timer`;
+    }, [time])
 
-    }, [sec])
+
+    useEffect(() => {
+        if (start) {
+            console.log("Now Start")
+            startTimer()
+        }
+        else if (!start) {
+            console.log("Now Stop")
+            setStart(null)
+            stopTimer()
+        }
+    }, [start])
 
     const startTimer = () => {
-        var interval = setInterval(() => {
+        console.log('kkkk')
+        let interval = setInterval(() => {
             setSec(prev => prev + 1);
+            console.log('inter')
         }
             , 1000)
+        id.current = interval;
     }
     useEffect(() => {
-        if (sec != 0) {
-            console.log(time, seconds)
-            if (seconds == 0) {
-                setSeconds(59);
-                console.log(seconds);
-                setTime(time => time - 1);
-            }
-            else if (seconds == 0 && time == 0) {
+        if (sec != 0 && start) {
+            if (seconds == 0 && time == 0) {
                 alert("Timer is up!");
-                clearInterval(interval);
+                stopTimer();
+                setStart(false);
+            }
+            else if (seconds == 0) {
+                setSeconds(59);
+                setTime(time => time - 1);
             }
             else {
                 setSeconds(seconds => seconds - 1);
             }
         }
     }, [sec])
+
+    const stopTimer = () => {
+        console.log(id)
+        setSeconds(0); setTime(0)
+        clearInterval(id.current)
+    }
 
     return (
         <Heading style={styles.timerHeading}>
@@ -58,10 +84,10 @@ const timer = () => {
             >
                 <Box>
                     <IconButton
-                        aria-label="Setting-Icon"
+                        aria-label="Minus-Icon"
                         icon={<MinusIcon />}
                         size="md"
-                        onClick={() => { setTime(time - 5) }}
+                        onClick={() => { decFun(); }}
                     />
                 </Box>
                 <Box>
@@ -76,10 +102,10 @@ const timer = () => {
 
                 <Box>
                     <IconButton
-                        aria-label="Setting-Icon"
+                        aria-label="Add-Icon"
                         icon={<AddIcon />}
                         size="md"
-                        onClick={() => { setTime(time + 5) }}
+                        onClick={() => { setTime(prevCount => prevCount + 5) }}
                     />
                 </Box>
             </Stack>
@@ -93,7 +119,7 @@ const timer = () => {
                 <Button size="md"
                     colorScheme='blue'
                     variant='outline'
-                    onClick={() => { setSeconds(1) }}
+                    onClick={() => { setSeconds(2) }}
                 >
                     1 min
                 </Button>
@@ -123,9 +149,15 @@ const timer = () => {
                 </Button>
             </Stack>
             <Center style={styles.buttonStyle}>
-                <Button variantColor="teal" size="lg" onClick={startTimer}>Start</Button>
+                <Button
+                    colorScheme="teal"
+                    size="lg"
+                    onClick={() => { setStart(start = !start); console.log('call') }}
+                >
+                    {start ? 'Stop' : 'Start'}
+                </Button>
             </Center>
-        </Heading>
+        </Heading >
     )
 }
 
