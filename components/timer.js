@@ -25,8 +25,8 @@ const timer = () => {
     }
 
     useEffect(() => {
-        document.title = `${time} : ${seconds} - Pomodoro Timer`;
-    }, [time])
+        document.title = `${time < 10 ? '0' + time : time} : ${seconds < 10 ? '0' + seconds : seconds - 1} - Pomodoro Timer`;
+    }, [sec])
 
 
     useEffect(() => {
